@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Lowrance</title>
+    <link rel="stylesheet" href="styles.connect.css">
+    <script>
+        function cooldownBouton() {
+            var bouton = document.getElementById('submitButton');
+            var errorMsg = document.getElementById('error-message');
+            errorMsg.innerText = '';  // Réinitialise le message d'erreur s'il existe
+            bouton.disabled = true;  // Désactive le bouton
+            bouton.innerText = 'Connexion en cours...';
+
+            // Réactive le bouton après 3 secondes
+            setTimeout(function() {
+                bouton.innerText = 'Connexion échouée, réessayer';  // Affiche message d'échec
+                setTimeout(function() {
+                    bouton.disabled = false;  // Réactive le bouton après l'échec
+                    bouton.innerText = 'Se connecter';  // Remet le texte d'origine
+                }, 2000);  // Garde "Connexion échouée" pendant 2 secondes
+            }, 3000);  // 3000 millisecondes = 3 secondes
+        }
+
+        // Validation des caractères (lettres et chiffres seulement)
+        function validateInput(event) {
+            var regex = /^[a-zA-Z0-9]*$/;
+            var input = event.target.value;
+            var errorMsg = document.getElementById('error-message');
+
+            if (!regex.test(input)) {
+                errorMsg.innerText = 'Seules les lettres et les chiffres sont autorisés.';
+                event.target.value = input.replace(/[^a-zA-Z0-9]/g, "");  // Supprime les caractères non valides
+            } else {
+                errorMsg.innerText = ''; 
+            }
+        }
+    </script>
+</head>
+<body>
+    <a href="index.html" class="logo">🏠</a>
+    <div class="login-container">
+        <h2>Connexion à Lowrance</h2>
+
+        <!-- Message d'erreur affiché ici -->
+        <p id="error-message"></p>
+
+        <form action="/login" method="POST" onsubmit="cooldownBouton(); return true;">
+            <div class="form-group">
+                <label for="login">Nom d'utilisateur :</label>
+                <input type="text" id="login" name="login" required oninput="validateInput(event)">
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="password" name="password" required oninput="validateInput(event)">
+            </div>
+            <div class="form-group">
+                <button type="submit" id="submitButton">Se connecter</button>
+            </div>
+        </form>
+
+        <!-- Lien pour créer un compte -->
+        <p class="login-text">Vous n'avez pas encore de compte ? <a href="lowrance.register.html" id="register-link">Créer En Un</a></p>
+    </div>
+</body>
+</html>

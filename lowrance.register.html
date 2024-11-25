@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription Lowrance</title>
+    <link rel="stylesheet" href="styles.register.css">
+    <script>
+        async function handleRegister(event) {
+            event.preventDefault();
+
+            const errorMsg = document.getElementById('error-message');
+            const submitButton = document.getElementById('submitButton');
+            errorMsg.innerText = ''; // Clear previous errors
+            submitButton.disabled = true;
+
+            // Récupérer les données du formulaire
+            const login = document.getElementById('login').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            // Vérifier les champs vides
+            if (!login || !email || !password) {
+                errorMsg.innerText = 'Tous les champs sont requis.';
+                submitButton.disabled = false;
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:3000/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ login, email, password }),
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                    window.location.href = 'lowrance.connect.html'; // Redirige vers la page de connexion
+                } else {
+                    errorMsg.innerText = data.error || 'Une erreur est survenue.';
+                }
+            } catch (error) {
+                errorMsg.innerText = 'Impossible de contacter le serveur.';
+            } finally {
+                submitButton.disabled = false;
+            }
+        }
+    </script>
+</head>
+<body>
+    <a href="index.html" class="logo">🏠</a>
+    <div class="login-container">
+        <h2>Inscription à Lowrance</h2>
+
+        <!-- Message d'erreur affiché ici -->
+        <p id="error-message"></p>
+
+        <!-- Formulaire -->
+        <form id="registerForm" onsubmit="handleRegister(event);">
+            <div class="form-group">
+                <label for="login">Nom d'utilisateur :</label>
+                <input type="text" id="login" name="login" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email :</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" id="submitButton">S'inscrire</button>
+            </div>
+        </form>
+
+        <p class="register-text">Déjà un compte ? <a href="lowrance.connect.html" id="login-link">Connectez-vous ici</a></p>
+    </div>
+</body>
+</html>

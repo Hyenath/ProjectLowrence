@@ -1,0 +1,5 @@
+/node_modules
+/phpmyadmin
+package.json
+package.js
+package-lock.json

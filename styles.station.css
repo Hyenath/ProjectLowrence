@@ -1,0 +1,49 @@
+/* Apply some margin and padding reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Style the body with a full-screen background image */
+body {
+    font-family: 'Arial', sans-serif;
+    background: url('background.jpg') no-repeat center center/cover; /* Full-screen background image */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    position: relative;
+    overflow: hidden;   
+}
+
+/* Container to hold main content */
+.container {
+    color: white;
+    margin-left: 5%;
+}
+
+/* Title styling */
+h1 {
+    font-size: 3rem; /* Increased font size */
+    margin-bottom: 20px;
+    color: rgba(0, 160, 255); /* Yellow-orange color */
+    text-shadow: 
+        -1px -1px 0 #FFFFFF,  /* Top-left white shadow */
+        1px -1px 0 #FFFFFF,   /* Top-right white shadow */
+        -1px 1px 0 #FFFFFF,   /* Bottom-left white shadow */
+        1px 1px 0 #FFFFFF;    /* Bottom-right white shadow */
+    text-decoration-color: rgba(0, 160, 255);
+    text-decoration: underline;
+}
+/* Subtitle styling */
+p {
+    font-size: 2rem;
+    color: rgb(255, 255, 255); /* Yellow-orange color */
+    text-shadow: 
+        -1px -1px 0 rgb(0, 0, 0),  /* Top-left white shadow */
+        1px -1px 0 rgb(0, 0, 0),   /* Top-right white shadow */
+        -1px 1px 0 rgb(0, 0, 0),   /* Bottom-left white shadow */
+        1px 1px 0 rgb(0, 0, 0);    /* Bottom-right white shadow */
+}
