@@ -4,9 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Station Météo Lowrance</title>
+    <link rel="stylesheet" href="styles.mainpage.css">
 </head>
 <body>
-    <h1>Bienvenue sur votre station météorologique</h1>
-    <p>Voici les prévisions météo les plus précises !</p>
+    <div class="logo">🌦️ Station Météo</div>
+    <div class="container">
+        <h1>Bienvenue sur votre station météorologique</h1>
+        <p>Voici les prévisions météo les plus précises !</p>
+        <div class="buttons">
+            <button class="btn" id="fetchData">Récupérer une trame</button>
+            <button class="btn" id="clearData">Effacer</button>
+        </div>
+        <div class="result-container">
+            <h2>Données reçues :</h2>
+            <p id="resultText">Aucune trame reçue pour l'instant.</p>
+        </div>
+    </div>
+    <script src="station.js"></script>
 </body>
 </html>

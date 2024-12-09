@@ -6,34 +6,64 @@
     <title>Connexion Lowrance</title>
     <link rel="stylesheet" href="styles.connect.css">
     <script>
-        function cooldownBouton() {
-            var bouton = document.getElementById('submitButton');
-            var errorMsg = document.getElementById('error-message');
-            errorMsg.innerText = '';  // Réinitialise le message d'erreur s'il existe
-            bouton.disabled = true;  // Désactive le bouton
-            bouton.innerText = 'Connexion en cours...';
+        // Fonction pour gérer l'état du bouton de connexion
+        async function handleLogin(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
 
-            // Réactive le bouton après 3 secondes
-            setTimeout(function() {
-                bouton.innerText = 'Connexion échouée, réessayer';  // Affiche message d'échec
-                setTimeout(function() {
-                    bouton.disabled = false;  // Réactive le bouton après l'échec
-                    bouton.innerText = 'Se connecter';  // Remet le texte d'origine
-                }, 2000);  // Garde "Connexion échouée" pendant 2 secondes
-            }, 3000);  // 3000 millisecondes = 3 secondes
+            const login = document.getElementById('login').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMsg = document.getElementById('error-message');
+            const submitButton = document.getElementById('submitButton');
+
+            // Réinitialise l'état du bouton et du message d'erreur
+            errorMsg.innerText = '';
+            submitButton.disabled = true;
+            submitButton.innerText = 'Connexion en cours...';
+
+            // Vérification des champs vides
+            if (!login || !password) {
+                errorMsg.innerText = 'Tous les champs sont requis.';
+                submitButton.disabled = false;
+                submitButton.innerText = 'Se connecter';
+                return;
+            }
+
+            try {
+                // Appel API pour la connexion
+                const response = await fetch('http://192.168.64.207:3000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ login, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert(data.message); // Succès de la connexion
+                    window.location.href = 'station.html'; // Redirige vers le tableau de bord
+                } else {
+                    errorMsg.innerText = data.error || 'Nom d\'utilisateur ou mot de passe incorrect.';
+                    submitButton.innerText = 'Réessayer';
+                }
+            } catch (error) {
+                errorMsg.innerText = 'Impossible de contacter le serveur.';
+            } finally {
+                submitButton.disabled = false; // Réactive le bouton après l'opération
+                submitButton.innerText = 'Se connecter';
+            }
         }
 
-        // Validation des caractères (lettres et chiffres seulement)
+        // Validation des caractères : lettres et chiffres uniquement
         function validateInput(event) {
-            var regex = /^[a-zA-Z0-9]*$/;
-            var input = event.target.value;
-            var errorMsg = document.getElementById('error-message');
+            const regex = /^[a-zA-Z0-9]*$/;
+            const input = event.target.value;
+            const errorMsg = document.getElementById('error-message');
 
             if (!regex.test(input)) {
                 errorMsg.innerText = 'Seules les lettres et les chiffres sont autorisés.';
-                event.target.value = input.replace(/[^a-zA-Z0-9]/g, "");  // Supprime les caractères non valides
+                event.target.value = input.replace(/[^a-zA-Z0-9]/g, ''); // Supprime les caractères non valides
             } else {
-                errorMsg.innerText = ''; 
+                errorMsg.innerText = '';
             }
         }
     </script>
@@ -46,14 +76,15 @@
         <!-- Message d'erreur affiché ici -->
         <p id="error-message"></p>
 
-        <form action="/login" method="POST" onsubmit="cooldownBouton(); return true;">
+        <!-- Formulaire de connexion -->
+        <form id="loginForm" onsubmit="handleLogin(event);">
             <div class="form-group">
                 <label for="login">Nom d'utilisateur :</label>
                 <input type="text" id="login" name="login" required oninput="validateInput(event)">
             </div>
             <div class="form-group">
                 <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="password" required oninput="validateInput(event)">
+                <input type="password" id="password" name="password" required>
             </div>
             <div class="form-group">
                 <button type="submit" id="submitButton">Se connecter</button>
@@ -61,7 +92,10 @@
         </form>
 
         <!-- Lien pour créer un compte -->
-        <p class="login-text">Vous n'avez pas encore de compte ? <a href="lowrance.register.html" id="register-link">Créer En Un</a></p>
+        <p class="login-text">
+            Vous n'avez pas encore de compte ? 
+            <a href="lowrance.register.html" id="register-link">Créer En Un</a>
+        </p>
     </div>
 </body>
 </html>

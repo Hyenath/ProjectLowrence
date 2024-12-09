@@ -21,14 +21,11 @@ body {
     position: absolute;
     top: 20px;
     left: 20px;
-    display: flex;
-    align-items: center;
     text-shadow: 
         -1px -1px 0 rgb(0, 0, 0),
         1px -1px 0 rgb(0, 0, 0),
         -1px 1px 0 rgb(0, 0, 0),   
         1px 1px 0 rgb(0, 0, 0);    
-
 }
 
 .container {
@@ -61,11 +58,9 @@ p {
         1px 1px 0 rgb(0, 0, 0);    
 }
 
-
 .buttons {
     margin-top: 20px;
 }
-
 
 .btn {
     display: inline-block;
@@ -77,18 +72,29 @@ p {
     color: white;
     text-decoration: none;
     font-size: 1.2rem;
-    transition: background-color 1.25s, border-color 1.25s, transform 1.25s ease;
+    transition: background-color 0.5s, border-color 0.5s, transform 0.3s ease;
 }
-
 
 .btn:hover {
     background-color: white;
     color: rgba(0, 160, 255);
     border-color: rgba(0, 160, 255);
-    transform: scale(1.20); /* Slightly enlarge on hover */
+    transform: scale(1.2);
 }
 
+.result-container {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+}
 
-html, body {
-    height: 100%;
+.result-container h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.result-container p {
+    font-size: 1.2rem;
+    color: #00a0ff;
 }
