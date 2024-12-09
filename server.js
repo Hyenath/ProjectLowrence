@@ -80,3 +80,21 @@ app.post('/login', (req, res) => {
         });
     });
 });
+
+app.get('/getTrame', (req, res) => {
+    const query = 'SELECT * FROM Trame ORDER BY RAND() LIMIT 1';
+
+    db.query(query, (error, results) => {
+        if (error) {
+            console.error('Erreur lors de l\'exécution de la requête:', error);
+            res.status(500).json({ error: 'Erreur serveur lors de la récupération des données.' });
+            return;
+        }
+
+        if (results.length === 0) {
+            res.status(404).json({ error: 'Aucune donnée disponible dans la table Trame.' });
+        } else {
+            res.json(results[0]);
+        }
+    });
+});
