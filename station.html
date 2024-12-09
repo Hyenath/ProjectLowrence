@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Station Météo Lowrance</title>
     <link rel="stylesheet" href="styles.mainpage.css">
+
+    <!-- Lien vers le fichier CSS de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <style>
+        /* Définir la taille de la carte */
+        #map {
+            height: 400px; /* Hauteur de la carte */
+            width: 100%; /* Largeur de la carte */
+        }
+    </style>
 </head>
 <body>
     <div class="logo">🌦️ Station Météo</div>
@@ -19,7 +30,15 @@
             <h2>Données reçues :</h2>
             <p id="resultText">Aucune trame reçue pour l'instant.</p>
         </div>
+        
+        <!-- Div pour afficher la carte -->
+        <div id="map"></div>
     </div>
+
     <script src="station.js"></script>
+
+    <!-- Lien vers le fichier JavaScript de Leaflet -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 </body>
 </html>
