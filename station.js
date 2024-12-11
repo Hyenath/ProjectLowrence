@@ -27,15 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('Données incomplètes reçues.');
             }
 
-            return { id: data.id, latitude: data.latitude, longitude: data.longitude };
+            return data; // Renvoie l'objet data directement
         } catch (error) {
-            console.error('Erreur lors de la récupération des données:', error);
+            console.error('Erreur lors de la récupération des données :', error);
             return { error: error.message };
         }
     };
 
     // Fonction pour initialiser la carte
-    const initializeMap = (latitude, longitude) => {
+    const initializeMap = (latitude, longitude, id) => {
         // Si la carte existe déjà, on la supprime avant d'en créer une nouvelle
         if (map) {
             map.remove();
@@ -51,19 +51,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Ajouter un marqueur sur la carte aux coordonnées GPS récupérées
         L.marker([latitude, longitude]).addTo(map)
-            .bindPopup(`<b>ID:</b> ${data.id}<br><b>Latitude:</b> ${latitude}<br><b>Longitude:</b> ${longitude}`)
-            .openPopup();
+            .bindPopup(`<b>ID:</b> ${id}<br><b>Latitude:</b> ${latitude}<br><b>Longitude:</b> ${longitude}`)
     };
+    /////////////Faire en sorte d'appeler laposition en boucle + effacer trame = effacer map aussi ( y remédier)///////////////
 
     // Gestion du clic sur le bouton pour récupérer une trame aléatoire
     fetchDataButton.addEventListener('click', async () => {
         const gpsLocation = await fetchGpsLocation();
-        
+
         if (gpsLocation.error) {
             resultText.textContent = `Erreur : ${gpsLocation.error}`; // Afficher l'erreur
         } else {
-            resultText.textContent = `ID: ${gpsLocation.id}, Latitude: ${gpsLocation.latitude}, Longitude: ${gpsLocation.longitude}`;
-            initializeMap(gpsLocation.latitude, gpsLocation.longitude); // Initialiser la carte avec les coordonnées
+            const { id, latitude, longitude } = gpsLocation;
+            resultText.textContent = `ID: ${id}, Latitude: ${latitude}, Longitude: ${longitude}`;
+            initializeMap(latitude, longitude, id); // Initialiser la carte avec les coordonnées
         }
     });
 
