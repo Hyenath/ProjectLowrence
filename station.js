@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Si la carte existe déjà, on la supprime avant d'en créer une nouvelle
         if (map) {
             map.remove();
+            map = null; // Réinitialiser la variable map
         }
 
         // Créer une nouvelle carte Leaflet centrée sur les coordonnées données
@@ -56,8 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
     /////////////Faire en sorte d'appeler laposition en boucle + effacer trame = effacer map aussi ( y remédier)///////////////
 
     // Gestion du clic sur le bouton pour récupérer une trame aléatoire
+    // Gestion du clic sur le bouton pour récupérer une trame aléatoire
     fetchDataButton.addEventListener('click', async () => {
-        const gpsLocation = await fetchGpsLocation();
+        const gpsLocation = await fetchGpsLocation(); // Récupérer les données GPS
 
         if (gpsLocation.error) {
             resultText.textContent = `Erreur : ${gpsLocation.error}`; // Afficher l'erreur
@@ -71,9 +73,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Gestion du clic sur le bouton pour effacer les données affichées
     clearDataButton.addEventListener('click', () => {
         resultText.textContent = "Aucune trame reçue pour l'instant."; // Réinitialiser le texte des résultats
+
         if (map) {
-            map.remove(); // Effacer la carte
+            map.remove(); // Supprimer la carte Leaflet
+            map = null; // Réinitialiser la variable map
         }
+
+        // Réinitialiser l'élément DOM contenant la carte
+        const mapContainer = document.getElementById('map');
+        if (mapContainer) {
+            mapContainer.innerHTML = ''; // Supprimer le contenu du conteneur
+            mapContainer.style.background = 'none'; // Supprimer tout fond
+        }
+
         alert('Les données ont été effacées.'); // Alerte de confirmation
     });
 });
