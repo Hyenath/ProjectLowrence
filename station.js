@@ -56,22 +56,37 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     /////////////Faire en sorte d'appeler laposition en boucle + effacer trame = effacer map aussi ( y remédier)///////////////
 
+    
     // Gestion du clic sur le bouton pour récupérer une trame aléatoire
-    // Gestion du clic sur le bouton pour récupérer une trame aléatoire
-    fetchDataButton.addEventListener('click', async () => {
-        const gpsLocation = await fetchGpsLocation(); // Récupérer les données GPS
 
-        if (gpsLocation.error) {
-            resultText.textContent = `Erreur : ${gpsLocation.error}`; // Afficher l'erreur
-        } else {
-            const { id, latitude, longitude } = gpsLocation;
-            resultText.textContent = `ID: ${id}, Latitude: ${latitude}, Longitude: ${longitude}`;
-            initializeMap(latitude, longitude, id); // Initialiser la carte avec les coordonnées
-        }
+    let Fetching = false; // Indicateur pour contrôler la boucle
+
+    fetchDataButton.addEventListener('click', async () => {
+        if (Fetching) return; // Si une boucle est déjà en cours, on empêche de démarrer une nouvelle boucle
+        Fetching = true; // Démarre la boucle
+    
+        const fetchLoop = async () => {
+            if (!Fetching) return; // Si l'indicateur isFetching est false, on arrête la boucle
+    
+            const gpsLocation = await fetchGpsLocation(); // Récupérer les données GPS
+    
+            if (gpsLocation.error) {
+                resultText.textContent = `Erreur : ${gpsLocation.error}`; // Afficher l'erreur
+            } else {
+                const { id, latitude, longitude } = gpsLocation;
+                resultText.textContent = `ID: ${id}, Latitude: ${latitude}, Longitude: ${longitude}`;
+                initializeMap(latitude, longitude, id); // Initialiser la carte avec les coordonnées
+            }
+    
+            // Recommencer après un délai de 5 secondes
+            setTimeout(fetchLoop, 5000); // Appeler fetchLoop toutes les 5 secondes
+        };
+        fetchLoop(); // Démarre la boucle immédiatement
     });
 
     // Gestion du clic sur le bouton pour effacer les données affichées
     clearDataButton.addEventListener('click', () => {
+        Fetching = false; // Arrêter la boucle
         resultText.textContent = "Aucune trame reçue pour l'instant."; // Réinitialiser le texte des résultats
 
         if (map) {
